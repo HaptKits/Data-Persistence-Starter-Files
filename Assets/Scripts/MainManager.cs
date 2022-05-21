@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MainManager : MonoBehaviour
 {
+    private static int highScore;
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
@@ -15,13 +19,14 @@ public class MainManager : MonoBehaviour
     
     private bool m_Started = false;
     private int m_Points;
-    
     private bool m_GameOver = false;
 
-    
+    private int m_currentSavedHighScore;
     // Start is called before the first frame update
     void Start()
     {
+        SaveAndLoad.LoadHighScore();
+        GameUiHandler.highScore.text = $"HIGHEST SCORE: {SaveAndLoad.currentNameHighScore} : {SaveAndLoad.currentSavedHighScore}";
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -65,12 +70,19 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"{MainMenuHandler.userName} : {m_Points}";
     }
 
     public void GameOver()
     {
+        if (m_Points>SaveAndLoad.currentSavedHighScore)
+        {
+            highScore = m_Points;
+            GameUiHandler.highScore.text =  $"HIGHEST SCORE: {MainMenuHandler.userName} : {m_Points}";
+           SaveAndLoad.SaveHighScore(MainMenuHandler.userName,m_Points);
+        }
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
+
 }
