@@ -1184,8 +1184,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Current HIGHEST SCORE: 000000 : USER'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2791ce980a1210443acbda883dc4ef03, type: 2}
-  m_sharedMaterial: {fileID: 7819052577326150663, guid: 2791ce980a1210443acbda883dc4ef03, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f60f530ddf2bf3a48b93759595321834, type: 2}
+  m_sharedMaterial: {fileID: 5628463129570533344, guid: f60f530ddf2bf3a48b93759595321834, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1209,7 +1209,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25.7
+  m_fontSize: 37.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

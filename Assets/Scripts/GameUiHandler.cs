@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameUiHandler : MonoBehaviour
@@ -18,4 +19,11 @@ public class GameUiHandler : MonoBehaviour
       currentPlayer = MainMenuHandler.userName;
       score.text = currentPlayer +" : " +pointsTotal;
    }
+
+   public void OnReturnToMenu()
+   {
+      SceneManager.LoadScene(0);
+   }
+   
+   
 }

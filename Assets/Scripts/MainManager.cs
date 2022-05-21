@@ -9,14 +9,13 @@ using Random = UnityEngine.Random;
 
 public class MainManager : MonoBehaviour
 {
-    private static int highScore;
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
 
     public Text ScoreText;
     public GameObject GameOverText;
-    
+    public GameObject startTxt;
     private bool m_Started = false;
     private int m_Points;
     private bool m_GameOver = false;
@@ -25,6 +24,8 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        startTxt.SetActive(true);
+        GameOverText.SetActive(false);
         SaveAndLoad.LoadHighScore();
         GameUiHandler.highScore.text = $"HIGHEST SCORE: {SaveAndLoad.currentNameHighScore} : {SaveAndLoad.currentSavedHighScore}";
         const float step = 0.6f;
@@ -45,26 +46,23 @@ public class MainManager : MonoBehaviour
 
     private void Update()
     {
-        if (!m_Started)
+        if (m_Started||m_GameOver)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                m_Started = true;
-                float randomDirection = Random.Range(-1.0f, 1.0f);
-                Vector3 forceDir = new Vector3(randomDirection, 1, 0);
-                forceDir.Normalize();
+            startTxt.SetActive(false);
+            return;
+        }
 
-                Ball.transform.SetParent(null);
-                Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
-            }
-        }
-        else if (m_GameOver)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
+            m_Started = true;
+            float randomDirection = Random.Range(-1.0f, 1.0f);
+            Vector3 forceDir = new Vector3(randomDirection, 1, 0);
+            forceDir.Normalize();
+            
+            Ball.transform.SetParent(null);
+            Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
         }
+
     }
 
     void AddPoint(int point)
@@ -73,11 +71,15 @@ public class MainManager : MonoBehaviour
         ScoreText.text = $"{MainMenuHandler.userName} : {m_Points}";
     }
 
+    public void OnRestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void GameOver()
     {
         if (m_Points>SaveAndLoad.currentSavedHighScore)
         {
-            highScore = m_Points;
             GameUiHandler.highScore.text =  $"HIGHEST SCORE: {MainMenuHandler.userName} : {m_Points}";
            SaveAndLoad.SaveHighScore(MainMenuHandler.userName,m_Points);
         }
